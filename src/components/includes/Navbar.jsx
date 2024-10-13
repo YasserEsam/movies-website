@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { FaSearch, FaSun, FaMoon, FaUser } from 'react-icons/fa'
 import { BiMenu, BiX } from 'react-icons/bi'
 import Link from 'next/link'
-import SearchInput from './SearchInput'
-import CustomButton from './CustomButton'
+import SearchInput from '../SearchInput'
+import CustomButton from '../CustomButton'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -13,12 +13,12 @@ export default function Navbar() {
   const [isArabic, setIsArabic] = useState(false)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
-  
+
   const toggleTheme = () => {
     const newTheme = !isDarkMode
     setIsDarkMode(newTheme)
     localStorage.setItem('darkMode', newTheme)
-    
+
     if (newTheme) {
       document.documentElement.classList.add('dark')
     } else {
@@ -32,8 +32,8 @@ export default function Navbar() {
     { name: 'Home', path: '/' },
     { name: 'Movies', path: '/movies' },
     { name: 'Actors', path: '/actors' },
+    { name: 'Contact', path: '/contact' },
   ]
-
 
   useEffect(() => {
     const darkMode = localStorage.getItem('darkMode')
@@ -43,10 +43,8 @@ export default function Navbar() {
     }
   }, [])
 
-
-
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-lg fixed w-full z-50">
+    <nav className="bg-white dark:bg-gray-900 shadow-lg  w-full">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 py-4 flex justify-between items-center">
         {/* Left Section: Logo and Menu Items */}
         <div className="flex items-center space-x-4 md:space-x-8">
@@ -55,7 +53,7 @@ export default function Navbar() {
             href="/"
             className="text-2xl font-bold text-gray-800 dark:text-white"
           >
-            TMDB Movies
+            TMDB 
           </Link>
 
           {/* Desktop Menu */}
@@ -82,12 +80,12 @@ export default function Navbar() {
             </div>
             <CustomButton
               icon={isDarkMode ? FaSun : FaMoon}
-              text={isDarkMode ? 'Light Mode' : 'Dark Mode'}
+              text={isDarkMode ? 'Light' : 'Dark'}
               onClick={toggleTheme}
             />
 
             <CustomButton
-              text={isArabic ? 'Switch to EN' : 'Switch to AR'}
+              text={isArabic ? 'EN' : 'AR'}
               onClick={toggleLanguage}
             />
 
