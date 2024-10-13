@@ -22,8 +22,8 @@ const CustomButton = ({
       }}
       className={`flex items-center rounded dark:bg-gray-800  bg-gray-200 dark:text-gray-200 text-gray-800  transition-colors duration-300 ${className}`}
     >
-      {Icon && <Icon className="mr-2" />}
-      {text} 
+      {text  && <h1 className={Icon ? 'mr-2' : ''}>{text}</h1>} 
+      {Icon && <Icon />}
     </button>
   );
 };
