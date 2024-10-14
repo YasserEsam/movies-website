@@ -20,9 +20,9 @@ const CustomButton = ({
         margin,
         padding,
       }}
-      className={`flex items-center rounded dark:bg-gray-800  bg-gray-200 dark:text-gray-200 text-gray-800  transition-colors duration-300 ${className}`}
+      className={`flex gap-2 items-center rounded dark:bg-gray-800  bg-gray-200 dark:text-gray-200 text-gray-800  transition-colors duration-300 ${className}`}
     >
-      {text  && <h1 className={Icon ? 'mr-2' : ''}>{text}</h1>} 
+      {text  && <h1>{text}</h1>} 
       {Icon && <Icon />}
     </button>
   );

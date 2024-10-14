@@ -5,7 +5,7 @@ import emailjs from 'emailjs-com';
 import CustomButton from '@/components/CustomButton';
 import Toast from '@/components/Toast';
 
-const ContactForm = () => {
+const ContactForm = ({ dict }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -73,7 +73,7 @@ const ContactForm = () => {
         name="fullName"
         value={formData.fullName}
         onChange={handleChange}
-        placeholder="Full Name"
+        placeholder={dict.fullName}
         type="text"
         className="py-5 pl-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
       />
@@ -81,7 +81,7 @@ const ContactForm = () => {
         name="email"
         value={formData.email}
         onChange={handleChange}
-        placeholder="Email Address"
+        placeholder={dict.email}
         type="email"
         className="py-5 pl-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
       />
@@ -89,7 +89,7 @@ const ContactForm = () => {
         name="phoneNumber"
         value={formData.phoneNumber}
         onChange={handleChange}
-        placeholder="Phone Number"
+        placeholder={dict.phoneNumber}
         type="text"
         className="py-5 pl-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
       />
@@ -97,14 +97,14 @@ const ContactForm = () => {
         name="message"
         value={formData.message}
         onChange={handleChange}
-        placeholder="Your Message"
+        placeholder={dict.message}
         className="py-5 pl-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600 h-52 resize-none"
       ></textarea>
 
-      <CustomButton text={isSubmitting ? "Sending..." : "Send Message"} padding="0.8rem 3.5rem" />
+      <CustomButton text={isSubmitting ? dict.sending : dict.sendButton} padding="0.8rem 3.5rem" />
 
-      {isSuccess && <Toast type="success" message="Message sent successfully!" position="bottom-right" />}
-      {isError && <Toast type="error" message="Failed to send message. Please try again later." position="bottom-right" />}
+      {isSuccess && <Toast type="success" message={dict.successMessage} position="bottom-right" />}
+      {isError && <Toast type="error" message={dict.errorMessage} position="bottom-right" />}
     </form>
   );
 };

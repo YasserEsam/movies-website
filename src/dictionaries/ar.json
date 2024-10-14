@@ -1,0 +1,52 @@
+{
+  "Nav": {
+    "home": "الرئيسية",
+    "movies": "أفلام",
+    "tv": "برامج تلفزيونية",
+    "actors": "ممثلو",
+    "contact": "تواصل",
+    "search": "بحث عن الأفلام ... ",
+    "dark": "داكن",
+    "light": "فاتح",
+    "login": "تسجيل "
+  },
+
+  "Hero": {
+    "tagline": "استكشف أفلامك المفضلة",
+    "description": "اكتشف الأفلام والعروض مع TMDB Movies",
+    "details": "تصفح، قم بتقييم، وراجع الآلاف من الأفلام بسهولة. انضم إلى مجتمع من عشاق الأفلام اليوم!",
+    "getStarted": "ابدأ رحلتك الأن"
+  },
+  "Footer": {
+    "links": {
+      "home": "الرئيسية",
+      "movies": "الأفلام",
+      "actors": "الممثلون",
+      "contact": "اتصل بنا"
+    },
+    "copyright": "  TMDB Movies جميع الحقوق محفوظة"
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "sendMessage": "أرسل لنا رسالة",
+    "contactDetails": {
+      "phone": "+967773878487",
+      "email": "yaaser10esam1010@gmail.com",
+      "address": "شارع 30، صنعاء، اليمن"
+    },
+    "links": {
+      "phoneLink": "tel:+967773878487",
+      "emailLink": "mailto:yaaser10esam1010@gmail.com"
+    },
+    "form": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "message": "رسالتك",
+      "sendButton": "إرسال الرسالة",
+      "sending": "جاري الإرسال...",
+      "successMessage": "تم إرسال الرسالة بنجاح!",
+      "errorMessage": "فشل في إرسال الرسالة. الرجاء المحاولة لاحقاً."
+    }
+  }
+}

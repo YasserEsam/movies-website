@@ -1,6 +1,8 @@
 import Hero from '@/components/Hero'
 import MediaSection from '@/components/MediaSection'
 
+import { getDictionary } from './dictionaries'
+import CustomButton from '@/components/CustomButton'
 
 const movies = [
   {
@@ -51,7 +53,7 @@ const movies = [
     genre: 'Actress',
     additionalInfo: 'Award Winner',
   },
-];
+]
 
 const actors = [
   {
@@ -102,13 +104,14 @@ const actors = [
     genre: 'Actress',
     additionalInfo: 'Award Winner',
   },
-];
+]
 
-export default function Home() {
+export default async function Home({ params: { lang } }) {
+  const dict = await getDictionary(lang)
+
   return (
     <>
-      
-      <Hero/>
+      <Hero lang={lang} />
       <MediaSection title="New Movie Arrivals" mediaItems={movies} />
       <MediaSection title="Famous Actors" mediaItems={actors} />
     </>
