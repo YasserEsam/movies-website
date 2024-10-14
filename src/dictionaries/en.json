@@ -1,0 +1,54 @@
+{
+  "Nav": {
+    "home": "Home",
+    "movies": "Movies",
+    "tv": "TV Shows",
+    "actors": "Actors",
+    "contact": "Contact",
+    "search": "Search movies ... ",
+    "dark": "Dark",
+    "light": "Light",
+    "login": "Login"
+  },
+
+  "Hero": {
+    "tagline": "Explore your favorite movies",
+    "description": "Discover Movies and Shows with TMDB Movies",
+    "details": "Browse, rate, and review thousands of movies effortlessly. Join a community of film lovers today!",
+    "getStarted": "Get Started Now "
+  },
+
+  "Footer": {
+    "links": {
+      "home": "Home",
+      "movies": "Movies",
+      "actors": "Actors",
+      "contact": "Contact"
+    },
+    "copyright": "All rights reserved TMDB Movies"
+  },
+
+  "contact": {
+    "title": "Contact us",
+    "sendMessage": "Send Us A Message",
+    "contactDetails": {
+      "phone": "+967773878487",
+      "email": "yaaser10esam1010@gmail.com",
+      "address": "30 Street, Sana'a, Yemen"
+    },
+    "links": {
+      "phoneLink": "tel:+967773878487",
+      "emailLink": "mailto:yaaser10esam1010@gmail.com"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phoneNumber": "Phone Number",
+      "message": "Your Message",
+      "sendButton": "Send Message",
+      "sending": "Sending...",
+      "successMessage": "Message sent successfully!",
+      "errorMessage": "Failed to send message. Please try again later."
+    }
+  }
+}

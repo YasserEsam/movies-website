@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 
-const Footer = () => {
+const Footer = ({ dict }) => {
   const footerLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Movies', path: '/movies' },
-    { name: 'Actors', path: '/actors' },
-    { name: 'Contact', path: '/contact' },
+    { name: dict.links.home, path: '/' },
+    { name: dict.links.movies, path: '/movies' },
+    { name: dict.links.actors, path: '/actors' },
+    { name: dict.links.contact, path: '/contact' },
   ];
 
   return (
@@ -32,7 +32,7 @@ const Footer = () => {
 
         <div className="text-center mt-4">
           <p className="text-gray-600 dark:text-gray-400">
-            &copy; {new Date().getFullYear()} TMDB. All rights reserved.
+            &copy; {new Date().getFullYear()} {dict.copyright}
           </p>
         </div>
       </div>
