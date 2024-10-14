@@ -11,6 +11,13 @@
     "login": "تسجيل "
   },
 
+
+  "Landing": {
+    "TrendingMovies": "أشهر الأفلام حاليا",
+    "TrendingActors": "أشهر الممثلون حاليا"
+},
+
+
   "Hero": {
     "tagline": "استكشف أفلامك المفضلة",
     "description": "اكتشف الأفلام والعروض مع TMDB Movies",

@@ -11,6 +11,11 @@
     "login": "Login"
   },
 
+  "Landing": {
+      "TrendingMovies": "Trending Movies",
+      "TrendingActors": "Trending Actors"
+  },
+
   "Hero": {
     "tagline": "Explore your favorite movies",
     "description": "Discover Movies and Shows with TMDB Movies",

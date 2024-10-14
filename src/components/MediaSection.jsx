@@ -16,6 +16,8 @@ const MediaSection = ({ title, mediaItems }) => {
               imageUrl={item.imageUrl}
               genre={item.genre}
               additionalInfo={item.additionalInfo}
+              releaseDate={item.release_date}  // Example of additional data
+              rating={item.vote_average}        // Example of additional data
             />
           ))}
         </div>

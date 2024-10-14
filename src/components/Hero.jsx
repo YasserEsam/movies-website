@@ -3,6 +3,7 @@ import CustomButton from '@/components/CustomButton';
 import Description from '@/components/landingPage/Description';
 import Title from '@/components/landingPage/Title';
 import Tagline from '@/components/Tagline';
+import { fetchData } from '@/utils/api';
 import { BiRightArrow } from 'react-icons/bi';
 
 export default async function Hero({ lang }) { // Accept lang prop directly

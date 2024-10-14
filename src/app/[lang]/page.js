@@ -1,119 +1,53 @@
-import Hero from '@/components/Hero'
-import MediaSection from '@/components/MediaSection'
+import Hero from '@/components/Hero';
+import MediaSection from '@/components/MediaSection';
+import { getDictionary } from './dictionaries';
+import { fetchData } from '@/utils/api';
 
-import { getDictionary } from './dictionaries'
-import CustomButton from '@/components/CustomButton'
+const fetchTrendingMovies = async () => {
+  const timeWindow = 'week'; // or 'day'
+  return await fetchData(`/trending/movie/${timeWindow}`);
+};
 
-const movies = [
-  {
-    title: 'Trendy Jacket',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Action',
-    additionalInfo: '2010',
-  },
-  {
-    title: 'Black Blazer',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Drama',
-    additionalInfo: '2015',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-]
-
-const actors = [
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-]
+const fetchTrendingActors = async () => {
+  const timeWindow = 'week'; // or 'day'
+  return await fetchData(`/trending/person/${timeWindow}`);
+};
 
 export default async function Home({ params: { lang } }) {
-  const dict = await getDictionary(lang)
+  // Fetch dictionary for localization
+  const dict = await getDictionary(lang);
+  
+  // Fetch trending movies and actors
+  let moviesData, actorsData;
+  try {
+    moviesData = await fetchTrendingMovies();
+    actorsData = await fetchTrendingActors();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return <div>Error loading data.</div>; // Display error message to the user
+  }
+
+  // Map movies data to desired format
+  const movies = moviesData.results.map(movie => ({
+    title: movie.title,
+    imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    genre: movie.adult ? 'Adult' : 'Kids',
+    additionalInfo: movie.release_date.split('-')[0], // Extract release year
+  }));
+
+  // Map actors data to desired format
+  const actors = actorsData.results.map(actor => ({
+    title: actor.name,
+    imageUrl: `https://image.tmdb.org/t/p/w500${actor.profile_path}`,
+    genre: actor.known_for_department, // Department of the actor's work
+    additionalInfo: '', // Placeholder for additional info
+  }));
 
   return (
     <>
       <Hero lang={lang} />
-      <MediaSection title="New Movie Arrivals" mediaItems={movies} />
-      <MediaSection title="Famous Actors" mediaItems={actors} />
+      <MediaSection title={dict.Landing.TrendingMovies} mediaItems={movies} />
+      <MediaSection title={dict.Landing.TrendingActors} mediaItems={actors} />
     </>
-  )
+  );
 }
