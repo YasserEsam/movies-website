@@ -8,6 +8,7 @@ const AllActors = ({ mediaItems, lang }) => {
       mediaItems={mediaItems}
       lang={lang}
       isTaged={false}
+      type="actors"
     />
   )
 }

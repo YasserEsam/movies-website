@@ -28,6 +28,7 @@ export default function AllMovies({ lang }) {
       try {
         const moviesData = await fetchData(`/discover/movie`, lang, appliedFilters);
         const formattedMovies = moviesData.results.map((movie) => ({
+          id: movie.id,
           title: movie.title,
           imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
           genre: movie.adult ? 'Adult' : 'Kids',
@@ -151,6 +152,7 @@ export default function AllMovies({ lang }) {
         mediaItems={movies}
         lang={lang}
         isTaged={false}
+        type="movies"
       />
     </div>
   );

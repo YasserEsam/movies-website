@@ -26,6 +26,7 @@ export default function AllTv({ lang }) {
       try {
         const tvData = await fetchData(`/discover/tv`, lang, appliedFilters);
         const formattedTvShows = tvData.results.map((tv) => ({
+          id: tv.id,
           title: tv.original_name,
           imageUrl: `https://image.tmdb.org/t/p/w500${tv.poster_path}`,
           genre: tv.adult ? 'Adult' : 'Kids',
@@ -158,6 +159,7 @@ export default function AllTv({ lang }) {
         mediaItems={tvs}
         lang={lang}
         isTaged={false}
+        type="tv"
       />
     </div>
   );

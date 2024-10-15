@@ -26,6 +26,7 @@ export default async function Home({ params: { lang } }) {
   }
 
   const movies = moviesData.results.slice(0, 8).map(movie => ({
+    id: movie.id,
     title: movie.title,
     imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
     genre: movie.adult ? 'Adult' : 'Kids',
@@ -33,6 +34,7 @@ export default async function Home({ params: { lang } }) {
   }));
 
   const actors = actorsData.results.slice(0, 8).map(actor => ({
+    id: actor.id,
     title: actor.name,
     imageUrl: `https://image.tmdb.org/t/p/w500${actor.profile_path}`,
     genre: actor.known_for_department,
@@ -42,8 +44,8 @@ export default async function Home({ params: { lang } }) {
   return (
     <>
       <Hero lang={lang} />
-      <MediaSection title={dict.Landing.TrendingMovies} lang={lang}  mediaItems={movies} link={'/movies'} />
-      <MediaSection title={dict.Landing.TrendingActors} lang={lang} mediaItems={actors} link={'/actors'} />
+      <MediaSection type={'movies'} title={dict.Landing.TrendingMovies} lang={lang}  mediaItems={movies} link={'/movies'} />
+      <MediaSection type={'actors'} title={dict.Landing.TrendingActors} lang={lang} mediaItems={actors} link={'/actors'} />
     </>
   );
 }

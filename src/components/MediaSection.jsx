@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card'
 import Tagline from './Tagline'
 
-const MediaSection = ({ title, mediaItems, lang , isTaged = true , link }) => {
+const MediaSection = ({ title, mediaItems, lang , isTaged = true  , type , link }) => {
   const moreOf =
     lang === 'ar' ? `شاهد المزيد من ${title}` : `See more of ${title}`
 
@@ -16,15 +16,16 @@ const MediaSection = ({ title, mediaItems, lang , isTaged = true , link }) => {
           {isTaged && <Tagline text={moreOf} link={link} />}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
-          {mediaItems.map((item, index) => (
+          {mediaItems.map((item) => (
             <Card
-              key={index}
+              key={item.id}
               title={item.title}
               imageUrl={item.imageUrl}
               genre={item.genre}
               additionalInfo={item.additionalInfo}
               releaseDate={item.release_date} // Example of additional data
               rating={item.vote_average} // Example of additional data
+              type={`/${type}/${item.id}`} 
             />
           ))}
         </div>
