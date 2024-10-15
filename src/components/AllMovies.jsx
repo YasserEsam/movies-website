@@ -1,5 +1,7 @@
-import React from 'react'
-import MediaSection from './MediaSection'
+// src/components/AllMovies.jsx
+
+import React from 'react';
+import MediaSection from './MediaSection';
 
 const AllMovies = ({ mediaItems, lang }) => {
   return (
@@ -9,7 +11,7 @@ const AllMovies = ({ mediaItems, lang }) => {
       lang={lang}
       isTaged={false}
     />
-  )
-}
+  );
+};
 
-export default AllMovies
+export default AllMovies;

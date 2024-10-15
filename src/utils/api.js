@@ -4,11 +4,26 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 /**
  * Fetch data from TMDB API
  * @param {string} endpoint - The API endpoint to call
- * @param {string} language - The language code (e.g., 'en', 'ar')
  * @param {Object} options - Additional fetch options (method, headers, etc.)
  * @returns {Promise<Object>} - The response data
  */
-export const fetchData = async (endpoint, language = 'en', options = {}) => {
+export const fetchData = async (endpoint, options = {}) => {
+  let language = 'en'; // Default language
+
+  // Check if running in the browser
+  if (typeof window !== 'undefined') {
+    // Determine the language from the URL
+    const pathSegments = window.location.pathname.split('/');
+    const langSegment = pathSegments[1]; // Get the language segment from the URL
+
+    // Validate and set language from URL
+    if (langSegment === 'ar' || langSegment === 'en') {
+      language = langSegment;
+    } else {
+      console.warn(`Unsupported language segment "${langSegment}". Defaulting to English.`);
+    }
+  }
+
   // Log the chosen language for debugging purposes
   console.log('Using language for fetch:', language);
 
@@ -23,6 +38,9 @@ export const fetchData = async (endpoint, language = 'en', options = {}) => {
     }
 
     const data = await response.json();
+
+    // Optional: Log the fetched data for further debugging
+    console.log('Fetched data:', data);
 
     return data;
   } catch (error) {
