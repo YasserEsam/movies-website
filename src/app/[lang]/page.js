@@ -1,119 +1,49 @@
-import Hero from '@/components/Hero'
-import MediaSection from '@/components/MediaSection'
+import Hero from '@/components/Hero';
+import MediaSection from '@/components/MediaSection';
+import { getDictionary } from './dictionaries';
+import { fetchData } from '@/utils/api';
 
-import { getDictionary } from './dictionaries'
-import CustomButton from '@/components/CustomButton'
+const fetchTrendingMovies = async (lang) => {
+  const timeWindow = 'day'; 
+  return await fetchData(`/trending/movie/${timeWindow}`, lang);
+};
 
-const movies = [
-  {
-    title: 'Trendy Jacket',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Action',
-    additionalInfo: '2010',
-  },
-  {
-    title: 'Black Blazer',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Drama',
-    additionalInfo: '2015',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-]
-
-const actors = [
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Leonardo DiCaprio',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731972.png',
-    genre: 'Actor',
-    additionalInfo: 'Award Winner',
-  },
-  {
-    title: 'Meryl Streep',
-    imageUrl: 'https://pagedone.io/asset/uploads/1700731993.png',
-    genre: 'Actress',
-    additionalInfo: 'Award Winner',
-  },
-]
+const fetchTrendingActors = async (lang) => {
+  const timeWindow = 'day';
+  return await fetchData(`/trending/person/${timeWindow}`, lang);
+};
 
 export default async function Home({ params: { lang } }) {
-  const dict = await getDictionary(lang)
+  const dict = await getDictionary(lang);
+
+  let moviesData, actorsData;
+  try {
+    moviesData = await fetchTrendingMovies(lang);
+    actorsData = await fetchTrendingActors(lang);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return <div>Error loading data.</div>;
+  }
+
+  const movies = moviesData.results.slice(0, 8).map(movie => ({
+    title: movie.title,
+    imageUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    genre: movie.adult ? 'Adult' : 'Kids',
+    additionalInfo: movie.release_date.split('-')[0], 
+  }));
+
+  const actors = actorsData.results.slice(0, 8).map(actor => ({
+    title: actor.name,
+    imageUrl: `https://image.tmdb.org/t/p/w500${actor.profile_path}`,
+    genre: actor.known_for_department,
+    additionalInfo: '', 
+  }));
 
   return (
     <>
       <Hero lang={lang} />
-      <MediaSection title="New Movie Arrivals" mediaItems={movies} />
-      <MediaSection title="Famous Actors" mediaItems={actors} />
+      <MediaSection title={dict.Landing.TrendingMovies} lang={lang}  mediaItems={movies} link={'/movies'} />
+      <MediaSection title={dict.Landing.TrendingActors} lang={lang} mediaItems={actors} link={'/actors'} />
     </>
-  )
+  );
 }

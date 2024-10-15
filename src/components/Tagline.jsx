@@ -1,12 +1,13 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Tagline = ({ text, link, buttonLabel }) => {
   return (
-    <div className="border border-indigo-600 p-1 w-60 mx-auto rounded-full flex items-center justify-between mb-4">
+    <div className="border border-indigo-600 p-1 w-60 rounded-full flex items-center justify-between mb-4">
       <span className="font-inter text-xs font-medium text-gray-900 px-2">
         {text}
       </span>
-      <a
+      <Link
         href={link}
         className="w-8 h-8 rounded-full flex justify-center items-center bg-indigo-600"
       >
@@ -25,7 +26,7 @@ const Tagline = ({ text, link, buttonLabel }) => {
             strokeLinejoin="round"
           />
         </svg>
-      </a>
+      </Link>
     </div>
   );
 };
