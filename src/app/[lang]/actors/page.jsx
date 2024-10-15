@@ -1,6 +1,11 @@
 import { fetchData } from "@/utils/api";
 import { getDictionary } from "../dictionaries";
-import AllActors from "@/components/AllActors";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+// Lazy load the AllActors component
+const AllActors = dynamic(() => import("@/components/AllActors"), { ssr: false });
+const Spinner = dynamic(() => import("@/components/spinner"), { ssr: false });
 
 const fetchAllActors = async (lang) => {
   return await fetchData(`/person/popular`, lang);
@@ -25,8 +30,8 @@ export default async function Actors({ params: { lang } }) {
   }));
 
   return (
-    <>
+    <Suspense fallback={<Spinner />}>
       <AllActors lang={lang} mediaItems={actors} />
-    </>
+    </Suspense>
   );
 }

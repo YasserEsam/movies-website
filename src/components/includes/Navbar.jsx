@@ -42,8 +42,8 @@ export default function Navbar({ lang, dict }) {
   const menuItems = [
     { name: dict.home, path: '/' },
     { name: dict.movies, path: '/movies' },
-    { name: dict.actors, path: '/actors' },
     { name: dict.tv, path: '/tv' },
+    { name: dict.actors, path: '/actors' },
     { name: dict.contact, path: '/contact' },
   ];
 

@@ -4,7 +4,7 @@ import React from 'react';
 const Tagline = ({ text, link, buttonLabel }) => {
   return (
     <div className="border border-indigo-600 p-1 w-60 rounded-full flex items-center justify-between mb-4">
-      <span className="font-inter text-xs font-medium text-gray-900 px-2">
+      <span className="font-inter text-xs font-medium text-gray-900 dark:text-gray-500 px-2">
         {text}
       </span>
       <Link
