@@ -13,7 +13,7 @@ export default function Navbar({ lang, dict }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isArabic, setIsArabic] = useState(lang === 'ar')
-  const [user, setUser] = useState(null) // Store the logged-in user
+  const [user, setUser] = useState(null)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
 
@@ -32,12 +32,9 @@ export default function Navbar({ lang, dict }) {
   const toggleLanguage = () => {
     const newLang = isArabic ? 'en' : 'ar'
     setIsArabic(!isArabic)
-
-    // Store language in both localStorage and a cookie for the server
     localStorage.setItem('preferredLang', newLang)
     document.cookie = `preferredLang=${newLang}; path=/`
-
-    // Rebuild the current path to switch languages
+    
     const currentPath = window.location.pathname.replace(/^\/(en|ar)/, '')
     window.location.href = `/${newLang}${currentPath}`
   }
@@ -51,7 +48,6 @@ export default function Navbar({ lang, dict }) {
     { name: dict.favorites, path: '/favorite' },
   ]
 
-  // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
@@ -67,41 +63,31 @@ export default function Navbar({ lang, dict }) {
       document.documentElement.classList.add('dark')
     }
 
-    // Check for preferred language from localStorage
     const savedLang = localStorage.getItem('preferredLang')
-    const currentLang = window.location.pathname.split('/')[1] // Extract current language from URL
-
+    const currentLang = window.location.pathname.split('/')[1]
+    
     if (savedLang && savedLang !== currentLang) {
       window.location.href = `/${savedLang}${window.location.pathname.replace(/^\/(en|ar)/, '')}`
     }
   }, [])
 
-  // Logout function
   const handleLogout = async () => {
     await signOut(auth)
     setUser(null)
   }
 
   return (
-    <nav
-      className={`bg-white dark:bg-gray-900 shadow-lg w-full ${isArabic ? 'text-right' : 'text-left'}`}
-    >
+    <nav className={`bg-white dark:bg-gray-900 shadow-lg w-full ${isArabic ? 'text-right' : 'text-left'}`}>
       <div className="container mx-auto px-4 md:px-6 lg:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center gap-4 md:gap-8">
-          <Link
-            href={`/${isArabic ? 'ar' : 'en'}/`}
-            className="text-2xl font-bold text-gray-800 dark:text-white"
-          >
+          <Link href={`/${isArabic ? 'ar' : 'en'}/`} className="text-2xl font-bold text-gray-800 dark:text-white">
             TMDB
           </Link>
 
           <ul className="hidden md:flex gap-6 md:gap-4 items-center">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <Link
-                  href={`/${isArabic ? 'ar' : 'en'}${item.path}`}
-                  className="text-gray-700 dark:text-gray-200 hover:text-blue-400 text-sm md:text-base"
-                >
+                <Link href={`/${isArabic ? 'ar' : 'en'}${item.path}`} className="text-gray-700 dark:text-gray-200 hover:text-blue-400 text-sm md:text-base">
                   {item.name}
                 </Link>
               </li>
@@ -121,10 +107,9 @@ export default function Navbar({ lang, dict }) {
               text={isArabic ? 'EN' : 'AR'}
               onClick={toggleLanguage}
             />
-
+            
             {user ? (
               <>
-                {/* Show user's displayName if available, otherwise fallback to dict.profile */}
                 <CustomButton
                   icon={FaUser}
                   text={user.displayName || dict.profile}
@@ -142,18 +127,13 @@ export default function Navbar({ lang, dict }) {
             )}
           </div>
 
-          <button
-            className="md:hidden text-gray-700 dark:text-gray-200 ml-4"
-            onClick={toggleMenu}
-          >
+          <button className="md:hidden text-gray-700 dark:text-gray-200 ml-4" onClick={toggleMenu}>
             {menuOpen ? <BiX size={28} /> : <BiMenu size={28} />}
           </button>
         </div>
       </div>
 
-      <div
-        className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-white dark:bg-gray-900 px-3`}
-      >
+      <div className={`md:hidden ${menuOpen ? 'block' : 'hidden'} bg-white dark:bg-gray-900 px-3`}>
         <ul className="flex flex-col items-start py-4 space-y-2 border-b border-gray-300 dark:border-gray-700">
           <li className="w-full">
             <SearchInput placeholder={dict.search} />
@@ -193,33 +173,43 @@ export default function Navbar({ lang, dict }) {
               }}
             />
           </li>
-          <li className="w-full">
-            <CustomButton
-              icon={FaUser}
-              text={user?.displayName || dict.profile}
-              width="100%"
-            />
-          </li>
-          <li className="w-full">
-            {user ? (
-              <CustomButton
-                width="100%"
-                icon={FaSignOutAlt}
-                text={dict.logout}
-                onClick={() => {
-                  handleLogout()
-                  toggleMenu() // Close the menu after logout
-                }}
-              />
-            ) : (
+
+          {user ? (
+            <>
+              <li className="w-full">
+                <CustomButton
+                  icon={FaUser}
+                  text={user.displayName || dict.profile}
+                  width="100%"
+                />
+              </li>
+              <li className="w-full">
+                <CustomButton
+                  width="100%"
+                  icon={FaSignOutAlt}
+                  text={dict.logout}
+                  onClick={() => {
+                    handleLogout()
+                    toggleMenu() // Close the menu after logout
+                  }}
+                />
+              </li>
+            </>
+          ) : (
+            <li className="w-full">
+            <Link href="/login">
               <CustomButton
                 icon={FaUser}
                 text={dict.login}
                 href="/login"
                 width="100%"
+                onClick={() => {
+                    toggleMenu()
+                  }}
               />
-            )}
-          </li>
+            </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

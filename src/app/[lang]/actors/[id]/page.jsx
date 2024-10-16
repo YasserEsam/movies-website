@@ -72,6 +72,7 @@ export default async function ActorPage({ params: { id, lang } }) {
             {actor.knownFor.length > 0 ? (
               actor.knownFor.slice(0, 12).map((movie) => (
                 <Card
+                  id={movie.id}
                   key={movie.id}
                   title={movie.title}
                   imageUrl={movie.posterUrl}
