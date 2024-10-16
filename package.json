@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "emailjs-com": "^3.2.0",
     "firebase": "^10.14.1",
+    "lodash.debounce": "^4.0.8",
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",

@@ -16,14 +16,7 @@ export default async function Hero({ lang }) {
         </div>
         <Title text={dict.Hero.description} />
         <Description text={dict.Hero.details} />
-        <div className="flex justify-center items-center">
-          <CustomButton
-            text={dict.Hero.getStarted}
-            icon={BiRightArrow}
-            padding={'0.8rem 2.5rem'}
-            className="bg-indigo-600 text-white hover:bg-indigo-500 dark:bg-indigo-700 dark:hover:bg-indigo-600"
-          />
-        </div>
+        
       </div>
     </section>
   );
