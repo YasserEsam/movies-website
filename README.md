@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Movies TMDB Website
 
-## Getting Started
+A movie exploration platform built with **Next.js 14**, **TMDb API**, and **Firebase**. This website allows users to search for movies, explore detailed information about them, add items to their favorites, and switch between English and Arabic. It also features dynamic light/dark mode support for an enhanced user experience.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Check out the live version of the project:  
+**[Movies TMDB Website](https://movies-website-ke95.vercel.app/en)**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 🔍 **Search Functionality**
+- Users can search for **movies** using the TMDb API.
+- Search results are dynamically fetched and displayed based on user queries.
+- Only relevant results are displayed.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### ⭐ **Add to Favorites**
+- Users can **log in** using **Firebase Authentication**.
+- Once logged in, users can **add** and **remove** movies, TV shows, and actors from their **Favorites**.
+- Favorites are stored in **Firebase Firestore** and accessible across sessions.
+- Favorites can be viewed on a dedicated **Favorites page**, organized by movies, TV shows, and actors.
 
-## Learn More
+### 🌐 **Multi-language Support (EN/AR)**
+- Full support for **English** and **Arabic** with RTL (right-to-left) adjustments for Arabic.
+- Language switcher implemented in the navbar, allowing users to toggle between **English** and **Arabic** without duplicating pages.
+- Translations are managed using the `next-intl` library and JSON files (`en.json` and `ar.json`).
 
-To learn more about Next.js, take a look at the following resources:
+### 🌓 **Dark/Light Mode**
+- Users can switch between **dark** and **light** modes for a personalized browsing experience.
+- The mode is persisted across sessions and changes the entire website's theme, including the navbar, footer, and all media elements.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🎞️ **Dynamic Pages**
+- The website features dynamic pages for **movies**, **TV shows**, and **actors**.
+- Users can click on any movie, TV show, or actor from search results or trending sections to view detailed information, such as release date, genre, rating, and more.
+- Dynamic routes are used to generate pages for individual movies (`/movies/:id`), TV shows (`/tv/:id`), and actors (`/actors/:id`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 🎯 **Advanced Filtering**
+- Users can filter movies based on multiple criteria such as **release year**, **popularity**, **vote average**, and more.
+- Results can be sorted and filtered dynamically to enhance the discovery experience.
 
-## Deploy on Vercel
+## Technology Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Frontend**: Next.js 14 (App Router), React.js, Tailwind CSS
+- **API**: TMDb API for movie, TV show, and actor data
+- **Backend**: Firebase (Firestore for favorites and Firebase Auth for authentication)
+- **Styling**: Tailwind CSS with custom themes for light and dark mode
+- **Hosting**: Vercel
