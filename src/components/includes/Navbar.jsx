@@ -48,6 +48,7 @@ export default function Navbar({ lang, dict }) {
     { name: dict.tv, path: '/tv' },
     { name: dict.actors, path: '/actors' },
     { name: dict.contact, path: '/contact' },
+    { name: dict.favorites, path: '/favorite' },
   ]
 
   // Listen for authentication state changes
@@ -219,7 +220,6 @@ export default function Navbar({ lang, dict }) {
               />
             )}
           </li>
-
         </ul>
       </div>
     </nav>
