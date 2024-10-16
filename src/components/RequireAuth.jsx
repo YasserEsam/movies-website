@@ -9,7 +9,7 @@ export default function RequireAuth({ children }) {
       if (!user) {
         router.push('/login');
       } else {
-        setLoading(false); // Set loading to false after user is detected
+        setLoading(false); 
       }
     });
 
@@ -17,7 +17,7 @@ export default function RequireAuth({ children }) {
   }, [router]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading state
+    return <div>Loading...</div>;
   }
 
   return <>{children}</>;

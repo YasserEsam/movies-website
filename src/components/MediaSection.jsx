@@ -24,8 +24,8 @@ const MediaSection = ({ title, mediaItems, lang , isTaged = true  , type , link 
               imageUrl={item.imageUrl}
               genre={item.genre}
               additionalInfo={item.additionalInfo}
-              releaseDate={item.release_date} // Example of additional data
-              rating={item.vote_average} // Example of additional data
+              releaseDate={item.release_date} 
+              rating={item.vote_average}
               type={`/${type}/${item.id}`} 
             />
           ))}

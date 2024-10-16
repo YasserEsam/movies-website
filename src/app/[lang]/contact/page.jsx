@@ -3,6 +3,13 @@ import { getDictionary } from '../dictionaries';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
+
+export const metadata = {
+  title: 'Contact Us - Movies App',
+  description: 'Contact Us page',
+}
+
+
 export default async function ContactUs({ params: { lang } }) {
   const dict = await getDictionary(lang);
 

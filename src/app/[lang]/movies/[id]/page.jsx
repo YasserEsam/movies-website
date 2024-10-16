@@ -2,6 +2,14 @@ import React from 'react';
 import { fetchData } from '@/utils/api';
 import Card from '@/components/Card';
 
+
+export const metadata = {
+  title: "Movie - Movies App",
+  description: 'Movie page',
+}
+
+
+
 export default async function page({ params: { id, lang } }) {
   const FetchSpecificMovie = async (lang) => {
     const movieId = id;
