@@ -174,6 +174,7 @@ export default async function page({ params: { id, lang } }) {
             <div className="flex overflow-x-auto gap-4 pb-4">
               {mediaItems.map((actor) => (
                 <Card
+                  id={actor.id}
                   key={actor.id}
                   title={actor.title}
                   imageUrl={actor.imageUrl}
