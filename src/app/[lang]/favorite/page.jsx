@@ -1,4 +1,6 @@
 "use client"
+
+
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../../firebase/config'
 import FavoritesList from '@/components/FavoritesList'

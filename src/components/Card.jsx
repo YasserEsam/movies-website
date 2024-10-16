@@ -58,7 +58,7 @@ const Card = ({ id, title, imageUrl, genre, additionalInfo, type, releaseDate, r
   }
 
   return (
-    <div className="relative h-96 w-64 mx-auto group rounded-3xl bg-white dark:bg-transparent overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
+    <div className="relative h-96 w-full max-w-80 min-w-64 mx-auto group rounded-3xl bg-white dark:bg-transparent overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl">
       <Link href={type}>
         <img
           className="rounded-t-3xl object-cover w-full h-72 group-hover:scale-110 transition-transform duration-300"

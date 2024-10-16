@@ -2,6 +2,13 @@ import React from 'react';
 import { fetchData } from '@/utils/api';
 import Card from '@/components/Card';
 
+export const metadata = {
+  title: "Actor - Movies App",
+  description: 'Actor page',
+}
+
+
+
 export default async function ActorPage({ params: { id, lang } }) {
   const FetchActorDetails = async (lang) => {
     return await fetchData(`/person/${id}`, lang);
@@ -34,6 +41,8 @@ export default async function ActorPage({ params: { id, lang } }) {
       id: movie.id,
       title: movie.title,
       posterUrl: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+      releaseDate: movie.release_date,
+      rating: movie.vote_average,
     })),
   };
 
@@ -66,8 +75,7 @@ export default async function ActorPage({ params: { id, lang } }) {
                   key={movie.id}
                   title={movie.title}
                   imageUrl={movie.posterUrl}
-                  genre={''} // Genre data can be fetched or added later
-                  additionalInfo={''} // Additional info can be added
+                  genre={movie.releaseDate}
                   type={`/movies/${movie.id}`}
                 />
               ))

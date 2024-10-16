@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import Link from 'next/link';
 
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
