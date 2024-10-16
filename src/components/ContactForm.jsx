@@ -75,7 +75,7 @@ const ContactForm = ({ dict }) => {
         onChange={handleChange}
         placeholder={dict.fullName}
         type="text"
-        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
+        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-500 w-full placeholder:text-gray-400"
       />
       <input
         name="email"
@@ -83,7 +83,7 @@ const ContactForm = ({ dict }) => {
         onChange={handleChange}
         placeholder={dict.email}
         type="email"
-        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
+        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-500 w-full placeholder:text-gray-400"
       />
       <input
         name="phoneNumber"
@@ -91,14 +91,14 @@ const ContactForm = ({ dict }) => {
         onChange={handleChange}
         placeholder={dict.phoneNumber}
         type="text"
-        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600"
+        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-500 w-full placeholder:text-gray-400"
       />
       <textarea
         name="message"
         value={formData.message}
         onChange={handleChange}
         placeholder={dict.message}
-        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-200 w-full placeholder:text-gray-600 h-52 resize-none"
+        className="py-5 px-6 rounded-lg mb-5 block bg-transparent border border-gray-500 w-full placeholder:text-gray-400 h-52 resize-none"
       ></textarea>
 
       <CustomButton text={isSubmitting ? dict.sending : dict.sendButton} padding="0.8rem 3.5rem" />
