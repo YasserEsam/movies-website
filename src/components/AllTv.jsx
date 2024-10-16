@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import MediaSection from './MediaSection';
 import { fetchData } from '@/utils/api';
-import Spinner from './spinner';
+import Spinner from './Spinner';
+import Pagination from './Pagination'; // Import the Pagination component
 
 export default function AllTv({ lang }) {
   const [tvs, setTvs] = useState([]);
@@ -13,12 +14,13 @@ export default function AllTv({ lang }) {
     first_air_date_year: '',
     with_genres: '',
     with_original_language: '',
+    page: 1, // Pagination page state
   });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [appliedFilters, setAppliedFilters] = useState(filters);
+  const [totalPages, setTotalPages] = useState(1); // Track total pages for pagination
 
   useEffect(() => {
     const fetchAllTvShows = async () => {
@@ -26,12 +28,14 @@ export default function AllTv({ lang }) {
       try {
         const tvData = await fetchData(`/discover/tv`, lang, appliedFilters);
         const formattedTvShows = tvData.results.map((tv) => ({
+          id: tv.id,
           title: tv.original_name,
           imageUrl: `https://image.tmdb.org/t/p/w500${tv.poster_path}`,
           genre: tv.adult ? 'Adult' : 'Kids',
           additionalInfo: tv.first_air_date.split('-')[0],
         }));
         setTvs(formattedTvShows);
+        setTotalPages(tvData.total_pages); // Set total pages for pagination
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Error loading data');
@@ -54,6 +58,17 @@ export default function AllTv({ lang }) {
     setAppliedFilters(filters);
   };
 
+  const handlePageChange = (newPage) => {
+    setFilters((prev) => ({
+      ...prev,
+      page: newPage, // Update the page number in filters
+    }));
+    setAppliedFilters((prev) => ({
+      ...prev,
+      page: newPage, // Apply the new page
+    }));
+  };
+
   if (loading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
@@ -71,7 +86,12 @@ export default function AllTv({ lang }) {
             <label className="block text-sm font-medium mb-1">
               {lang === 'ar' ? 'ترتيب حسب' : 'Sort By'}
             </label>
-            <select className="w-full p-2 border rounded" name="sort_by" value={filters.sort_by} onChange={handleFilterChange}>
+            <select
+              className="w-full p-2 border rounded"
+              name="sort_by"
+              value={filters.sort_by}
+              onChange={handleFilterChange}
+            >
               <option value="popularity.desc">Most Popular</option>
               <option value="first_air_date.desc">Newest</option>
               <option value="vote_average.desc">Highest Rated</option>
@@ -83,7 +103,12 @@ export default function AllTv({ lang }) {
             <label className="block text-sm font-medium mb-1">
               {lang === 'ar' ? 'سنة البث الأول' : 'First Air Date Year'}
             </label>
-            <select className="w-full p-2 border rounded" name="first_air_date_year" value={filters.first_air_date_year} onChange={handleFilterChange}>
+            <select
+              className="w-full p-2 border rounded"
+              name="first_air_date_year"
+              value={filters.first_air_date_year}
+              onChange={handleFilterChange}
+            >
               <option value="">All Years</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -109,7 +134,9 @@ export default function AllTv({ lang }) {
               type="checkbox"
               name="include_adult"
               checked={filters.include_adult}
-              onChange={() => setFilters((prev) => ({ ...prev, include_adult: !filters.include_adult }))}
+              onChange={() =>
+                setFilters((prev) => ({ ...prev, include_adult: !filters.include_adult }))
+              }
             />
           </div>
 
@@ -118,7 +145,12 @@ export default function AllTv({ lang }) {
             <label className="block text-sm font-medium mb-1">
               {lang === 'ar' ? 'النوع' : 'Genres'}
             </label>
-            <select className="w-full p-2 border rounded" name="with_genres" value={filters.with_genres} onChange={handleFilterChange}>
+            <select
+              className="w-full p-2 border rounded"
+              name="with_genres"
+              value={filters.with_genres}
+              onChange={handleFilterChange}
+            >
               <option value="">All Genres</option>
               <option value="16">Animation</option>
               <option value="18">Drama</option>
@@ -132,7 +164,12 @@ export default function AllTv({ lang }) {
             <label className="block text-sm font-medium mb-1">
               {lang === 'ar' ? 'اللغة' : 'Language'}
             </label>
-            <select className="w-full p-2 border rounded" name="with_original_language" value={filters.with_original_language} onChange={handleFilterChange}>
+            <select
+              className="w-full p-2 border rounded"
+              name="with_original_language"
+              value={filters.with_original_language}
+              onChange={handleFilterChange}
+            >
               <option value="">All Languages</option>
               <option value="en">English</option>
               <option value="ar">Arabic</option>
@@ -158,6 +195,14 @@ export default function AllTv({ lang }) {
         mediaItems={tvs}
         lang={lang}
         isTaged={false}
+        type="tv"
+      />
+
+      {/* Pagination Section */}
+      <Pagination
+        currentPage={filters.page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );
