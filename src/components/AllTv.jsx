@@ -1,32 +1,40 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import MediaSection from './MediaSection';
 import { fetchData } from '@/utils/api';
 import Spinner from './Spinner';
-import Pagination from './Pagination'; // Import the Pagination component
+import Pagination from './Pagination';
 
 export default function AllTv({ lang }) {
-  const [tvs, setTvs] = useState([]);
-  const [filters, setFilters] = useState({
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const pageFromQuery = parseInt(searchParams.get('page')) || 1;
+
+  const initialFilters = {
     sort_by: 'popularity.desc',
     include_adult: false,
     first_air_date_year: '',
     with_genres: '',
     with_original_language: '',
-    page: 1, // Pagination page state
-  });
+    page: pageFromQuery,
+  };
 
+  const [filters, setFilters] = useState(initialFilters);
+  const [tempFilters, setTempFilters] = useState(initialFilters);
+  const [tvs, setTvs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [appliedFilters, setAppliedFilters] = useState(filters);
-  const [totalPages, setTotalPages] = useState(1); // Track total pages for pagination
+  const [totalPages, setTotalPages] = useState(1);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
     const fetchAllTvShows = async () => {
       setLoading(true);
       try {
-        const tvData = await fetchData(`/discover/tv`, lang, appliedFilters);
+        const tvData = await fetchData(`/discover/tv`, lang, filters);
         const formattedTvShows = tvData.results.map((tv) => ({
           id: tv.id,
           title: tv.original_name,
@@ -35,147 +43,117 @@ export default function AllTv({ lang }) {
           additionalInfo: tv.first_air_date.split('-')[0],
         }));
         setTvs(formattedTvShows);
-        setTotalPages(tvData.total_pages); // Set total pages for pagination
+        setTotalPages(tvData.total_pages);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Error loading data');
       } finally {
         setLoading(false);
+        setIsFiltering(false);
       }
     };
 
     fetchAllTvShows();
-  }, [lang, appliedFilters]);
+  }, [lang, filters]);
 
   const handleFilterChange = (e) => {
-    setFilters((prev) => ({
+    setTempFilters((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
   const applyFilters = () => {
-    setAppliedFilters(filters);
+    setIsFiltering(true);
+    setFilters((prev) => ({
+      ...tempFilters,
+      page: 1,
+    }));
+    router.push('?page=1');
   };
 
   const handlePageChange = (newPage) => {
     setFilters((prev) => ({
       ...prev,
-      page: newPage, // Update the page number in filters
+      page: newPage,
     }));
-    setAppliedFilters((prev) => ({
-      ...prev,
-      page: newPage, // Apply the new page
-    }));
+    router.push(`?page=${newPage}`);
   };
 
-  if (loading) return <Spinner />;
+  if (loading && isFiltering) return <Spinner />;
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      {/* Filter Options */}
-      <div className="bg-gray-100 p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-8">
-        <h2 className="text-center text-2xl font-bold mb-4">
+    <div className="flex container mx-auto py-10 px-4">
+      <div className="dark:bg-gray-800 bg-gray-200 text-white p-6 rounded-lg shadow-lg max-w-xs w-full mr-4">
+        <h2 className="text-center text-2xl font-bold mb-4 dark:text-white text-black">
           {lang === 'ar' ? 'خيارات الفلترة' : 'Filter Options'}
         </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="flex flex-col">
           {/* Sort By */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              {lang === 'ar' ? 'ترتيب حسب' : 'Sort By'}
-            </label>
-            <select
-              className="w-full p-2 border rounded"
-              name="sort_by"
-              value={filters.sort_by}
-              onChange={handleFilterChange}
-            >
-              <option value="popularity.desc">Most Popular</option>
-              <option value="first_air_date.desc">Newest</option>
-              <option value="vote_average.desc">Highest Rated</option>
-            </select>
-          </div>
+          <label className="block text-sm font-medium mb-1 text-black dark:text-white">
+            {lang === 'ar' ? 'ترتيب حسب' : 'Sort By'}
+          </label>
+          <select
+            className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
+            name="sort_by"
+            value={tempFilters.sort_by}
+            onChange={handleFilterChange}
+          >
+            <option value="popularity.desc">Most Popular</option>
+            <option value="first_air_date.desc">Newest</option>
+            <option value="vote_average.desc">Highest Rated</option>
+          </select>
 
           {/* First Air Date Year */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              {lang === 'ar' ? 'سنة البث الأول' : 'First Air Date Year'}
-            </label>
-            <select
-              className="w-full p-2 border rounded"
-              name="first_air_date_year"
-              value={filters.first_air_date_year}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Years</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
-            </select>
-          </div>
-
-          {/* Include Adult */}
-          <div className="flex items-center">
-            <label className="block text-sm font-medium mb-1">
-              {lang === 'ar' ? 'تشمل عروض للكبار' : 'Include Adult'}
-            </label>
-            <input
-              className="ml-2"
-              type="checkbox"
-              name="include_adult"
-              checked={filters.include_adult}
-              onChange={() =>
-                setFilters((prev) => ({ ...prev, include_adult: !filters.include_adult }))
-              }
-            />
-          </div>
+          <label className="block text-sm font-medium mb-1 text-black dark:text-white">
+            {lang === 'ar' ? 'سنة البث الأول' : 'First Air Date Year'}
+          </label>
+          <select
+            className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
+            name="first_air_date_year"
+            value={tempFilters.first_air_date_year}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Years</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+          </select>
 
           {/* Genres */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              {lang === 'ar' ? 'النوع' : 'Genres'}
-            </label>
-            <select
-              className="w-full p-2 border rounded"
-              name="with_genres"
-              value={filters.with_genres}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Genres</option>
-              <option value="16">Animation</option>
-              <option value="18">Drama</option>
-              <option value="35">Comedy</option>
-              <option value="10765">Sci-Fi & Fantasy</option>
-            </select>
-          </div>
+          <label className="block text-sm font-medium mb-1 text-black dark:text-white">
+            {lang === 'ar' ? 'النوع' : 'Genres'}
+          </label>
+          <select
+            className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
+            name="with_genres"
+            value={tempFilters.with_genres}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Genres</option>
+            <option value="16">Animation</option>
+            <option value="18">Drama</option>
+            <option value="35">Comedy</option>
+            <option value="10765">Sci-Fi & Fantasy</option>
+          </select>
 
           {/* Language */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              {lang === 'ar' ? 'اللغة' : 'Language'}
-            </label>
-            <select
-              className="w-full p-2 border rounded"
-              name="with_original_language"
-              value={filters.with_original_language}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Languages</option>
-              <option value="en">English</option>
-              <option value="ar">Arabic</option>
-              <option value="es">Spanish</option>
-            </select>
-          </div>
+          <label className="block text-sm font-medium mb-1 text-black dark:text-white">
+            {lang === 'ar' ? 'اللغة' : 'Language'}
+          </label>
+          <select
+            className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
+            name="with_original_language"
+            value={tempFilters.with_original_language}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Languages</option>
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+            <option value="es">Spanish</option>
+          </select>
         </div>
 
         {/* Apply Filters Button */}
@@ -190,20 +168,29 @@ export default function AllTv({ lang }) {
       </div>
 
       {/* TV Shows Section */}
-      <MediaSection
-        title={lang === 'ar' ? 'جميع العروض التلفزيونية' : 'All TV Shows'}
-        mediaItems={tvs}
-        lang={lang}
-        isTaged={false}
-        type="tv"
-      />
+      <div className="flex-grow">
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            <MediaSection
+              title={lang === 'ar' ? 'جميع العروض التلفزيونية' : 'All TV Shows'}
+              mediaItems={tvs}
+              lang={lang}
+              isTaged={false}
+              type="tv"
+            />
 
-      {/* Pagination Section */}
-      <Pagination
-        currentPage={filters.page}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+            <Pagination
+              currentPage={filters.page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }
