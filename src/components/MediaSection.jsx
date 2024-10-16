@@ -19,6 +19,7 @@ const MediaSection = ({ title, mediaItems, lang , isTaged = true  , type , link 
           {mediaItems.map((item) => (
             <Card
               key={item.id}
+              id={item.id}
               title={item.title}
               imageUrl={item.imageUrl}
               genre={item.genre}

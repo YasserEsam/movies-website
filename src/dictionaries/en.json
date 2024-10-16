@@ -8,7 +8,8 @@
     "search": "Search movies ... ",
     "dark": "Dark",
     "light": "Light",
-    "login": "Login"
+    "login": "Login",
+    "favorites": "Favorites"
   },
 
   "Landing": {
