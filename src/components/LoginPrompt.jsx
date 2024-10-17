@@ -1,8 +1,8 @@
-const LoginPrompt = () => {
+const LoginPrompt = ({ lang }) => {
     return (
       <div className="text-center mt-6">
         <p className="text-lg font-medium text-gray-800 dark:text-white">
-          Please log in to view your favorite items.
+          {lang === 'ar' ? 'ليس لديك حساب؟' : 'Don\'t have an account?'}
         </p>
       </div>
     )
