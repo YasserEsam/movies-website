@@ -56,5 +56,16 @@
       "successMessage": "Message sent successfully!",
       "errorMessage": "Failed to send message. Please try again later."
     }
+  },
+
+  "login": {
+    "title": "Login",
+    "loginButton": "Login",
+    "dontHaveAccount": "Don't have an account?",
+    "register": "Register",
+    "form": {
+      "email": "Email",
+      "password": "Password"
+    }
   }
 }

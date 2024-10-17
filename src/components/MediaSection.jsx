@@ -7,9 +7,9 @@ const MediaSection = ({ title, mediaItems, lang , isTaged = true  , type , link 
     lang === 'ar' ? `شاهد المزيد من ${title}` : `See more of ${title}`
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-900">
+    <section className="py-12 bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-4 items-center mb-4">
+        <div className="flex lg:gap-4 gap-2 items-center mb-4 lg:flex-row flex-col ">
           <h2 className="font-manrope font-bold text-4xl text-black dark:text-white mb-8 max-xl:text-center">
             {title}
           </h2>

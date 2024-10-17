@@ -56,5 +56,15 @@
       "successMessage": "تم إرسال الرسالة بنجاح!",
       "errorMessage": "فشل في إرسال الرسالة. الرجاء المحاولة لاحقاً."
     }
+  },
+  "login": {
+    "title": "تسجيل ",
+    "loginButton": "تسجيل ",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "register": "تسجيل ",
+    "form": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    }
   }
 }
