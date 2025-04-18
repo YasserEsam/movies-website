@@ -74,7 +74,37 @@ const FavoritesList = ({ user, lang }) => {
 
   const categorizedFavorites = categorizeFavorites()
 
-  const sortedCategories = Object.keys(categorizedFavorites).sort((a, b) => a.localeCompare(b))
+  const sortedCategories = Object.keys(categorizedFavorites).sort((a, b) =>
+    a.localeCompare(b),
+  )
+
+  const getShareableText = () => {
+    if (favorites.length === 0) {
+      return lang === 'ar' ? 'لا توجد مفضلات للمشاركة.' : 'No favorites to share.'
+    }
+
+    return sortedCategories.map((type) => {
+      const items = categorizedFavorites[type]
+      const title = lang === 'ar'
+        ? type === 'Movies'
+          ? 'أفلام'
+          : type === 'TV Shows'
+          ? 'مسلسلات'
+          : 'ممثلين'
+        : type
+
+      const itemList = items.map((fav, index) => `${index + 1}. ${fav.itemName}`).join('\n')
+
+      return `${title}:\n${itemList}`
+    }).join('\n\n')
+  }
+
+  const handleCopyToClipboard = () => {
+    const text = getShareableText()
+    navigator.clipboard.writeText(text).then(() => {
+      alert(lang === 'ar' ? 'تم نسخ المفضلات!' : 'Favorites copied to clipboard!')
+    })
+  }
 
   if (favorites.length === 0) {
     return (
@@ -86,12 +116,20 @@ const FavoritesList = ({ user, lang }) => {
 
   return (
     <>
-      <button
-        onClick={handleClearAll}
-        className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 mb-6"
-      >
-        {lang === 'ar' ? 'مسح جميع المفضلات' : 'Clear all favorites'}
-      </button>
+      <div className="flex flex-wrap gap-4 mb-6">
+        <button
+          onClick={handleClearAll}
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        >
+          {lang === 'ar' ? 'مسح جميع المفضلات' : 'Clear all favorites'}
+        </button>
+        <button
+          onClick={handleCopyToClipboard}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
+          {lang === 'ar' ? 'نسخ المفضلات' : 'Copy favorites'}
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {sortedCategories.map((type) => (
@@ -108,10 +146,14 @@ const FavoritesList = ({ user, lang }) => {
                 <table className="min-w-full">
                   <thead>
                     <tr className="bg-gray-200 dark:bg-gray-700">
-                      <th className={`py-2 px-4 text-${lang === 'ar' ? 'right' : 'left'} text-gray-700 dark:text-white`}>
+                      <th
+                        className={`py-2 px-4 text-${lang === 'ar' ? 'right' : 'left'} text-gray-700 dark:text-white`}
+                      >
                         {lang === 'ar' ? 'العنصر' : 'Item'}
                       </th>
-                      <th className={`py-2 px-4 text-${lang === 'ar' ? 'right' : 'left'} text-gray-700 dark:text-white`}>
+                      <th
+                        className={`py-2 px-4 text-${lang === 'ar' ? 'right' : 'left'} text-gray-700 dark:text-white`}
+                      >
                         {lang === 'ar' ? 'العمليات' : 'Actions'}
                       </th>
                     </tr>
@@ -122,11 +164,13 @@ const FavoritesList = ({ user, lang }) => {
                         key={fav.id}
                         className="border-b hover:bg-gray-100 dark:hover:bg-gray-600"
                       >
-                        <td className={`py-2 px-4 flex items-center text-${lang === 'ar' ? 'right' : 'left'}`}>
+                        <td
+                          className={`py-2 px-4 flex items-center gap-3 text-${lang === 'ar' ? 'right' : 'left'}`}
+                        >
                           <img
                             src={fav.imageUrl}
                             alt={fav.itemName}
-                            className="w-20 h-20 object-cover rounded-md mr-4"
+                            className="w-20 h-20 object-cover rounded-md"
                           />
                           <span className="text-gray-800 dark:text-white">
                             {fav.itemName}
@@ -147,7 +191,9 @@ const FavoritesList = ({ user, lang }) => {
               </div>
             ) : (
               <p className="text-gray-600 dark:text-gray-300">
-                {lang === 'ar' ? `لا يوجد مفضلات في ${type}` : `No ${type.toLowerCase()} favorites yet.`}
+                {lang === 'ar'
+                  ? `لا يوجد مفضلات في ${type}`
+                  : `No ${type.toLowerCase()} favorites yet.`}
               </p>
             )}
           </div>

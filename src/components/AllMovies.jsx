@@ -11,24 +11,34 @@ export default function AllMovies({ lang }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const pageFromQuery = parseInt(searchParams.get('page')) || 1;
+  // Parse all filter values from URL
+  const getInitialFilters = () => ({
+    sort_by: searchParams.get('sort_by') || 'popularity.desc',
+    include_adult: searchParams.get('include_adult') === 'true' || false,
+    primary_release_year: searchParams.get('primary_release_year') || '',
+    with_genres: searchParams.get('with_genres') || '',
+    with_original_language: searchParams.get('with_original_language') || '',
+    page: parseInt(searchParams.get('page')) || 1,
+  });
 
-  const initialFilters = {
-    sort_by: 'popularity.desc',
-    include_adult: false,
-    primary_release_year: '',
-    with_genres: '',
-    with_original_language: '',
-    page: pageFromQuery,
-  };
-
-  const [filters, setFilters] = useState(initialFilters);
-  const [tempFilters, setTempFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState(getInitialFilters());
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
-  const [isFiltering, setIsFiltering] = useState(false);
+
+  // Update URL when filters change
+  const updateURL = (newFilters) => {
+    const params = new URLSearchParams();
+    
+    Object.entries(newFilters).forEach(([key, value]) => {
+      if (value !== '' && value !== false && value !== 1) { // Skip defaults
+        params.set(key, value.toString());
+      }
+    });
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
 
   useEffect(() => {
     const fetchAllMovies = async () => {
@@ -49,38 +59,29 @@ export default function AllMovies({ lang }) {
         setError('Error loading data');
       } finally {
         setLoading(false);
-        setIsFiltering(false);
       }
     };
 
     fetchAllMovies();
+    updateURL(filters);
   }, [lang, filters]);
 
   const handleFilterChange = (e) => {
-    setTempFilters((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const applyFilters = () => {
-    setIsFiltering(true);
-    setFilters((prev) => ({
-      ...tempFilters,
-      page: 1,
-    }));
-    router.push('?page=1');
+    const { name, value } = e.target;
+    const newFilters = { 
+      ...filters, 
+      [name]: value,
+      page: 1 // Reset to first page when filters change
+    };
+    setFilters(newFilters);
   };
 
   const handlePageChange = (newPage) => {
-    setFilters((prev) => ({
-      ...prev,
-      page: newPage,
-    }));
-    router.push(`?page=${newPage}`);
+    const newFilters = { ...filters, page: newPage };
+    setFilters(newFilters);
   };
 
-  if (loading && isFiltering) return <Spinner />;
+  if (loading) return <Spinner />;
   if (error) return <div>{error}</div>;
 
   return (
@@ -88,7 +89,7 @@ export default function AllMovies({ lang }) {
       {/* Filter Section */}
       <div className="flex justify-center mb-6 md:mb-0 md:max-w-xs w-full md:mr-4">
         <div className="dark:bg-gray-800 bg-gray-200 text-white p-6 rounded-lg shadow-lg w-full">
-          <h2 className="text-center text-2xl font-bold mb-4 dark:text-white text-black ">
+          <h2 className="text-center text-2xl font-bold mb-4 dark:text-white text-black">
             {lang === 'ar' ? 'خيارات الفلترة' : 'Filter Options'}
           </h2>
           <div className="flex flex-col">
@@ -99,7 +100,7 @@ export default function AllMovies({ lang }) {
             <select
               className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
               name="sort_by"
-              value={tempFilters.sort_by}
+              value={filters.sort_by}
               onChange={handleFilterChange}
             >
               <option value="popularity.desc">Most Popular</option>
@@ -114,10 +115,11 @@ export default function AllMovies({ lang }) {
             <select
               className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
               name="primary_release_year"
-              value={tempFilters.primary_release_year}
+              value={filters.primary_release_year}
               onChange={handleFilterChange}
             >
               <option value="">All Years</option>
+              <option value="2025">2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
               <option value="2022">2022</option>
@@ -132,7 +134,7 @@ export default function AllMovies({ lang }) {
             <select
               className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
               name="with_genres"
-              value={tempFilters.with_genres}
+              value={filters.with_genres}
               onChange={handleFilterChange}
             >
               <option value="">All Genres</option>
@@ -151,7 +153,7 @@ export default function AllMovies({ lang }) {
             <select
               className="w-full p-2 border rounded mb-4 dark:bg-gray-700 bg-gray-100 dark:text-white text-black"
               name="with_original_language"
-              value={tempFilters.with_original_language}
+              value={filters.with_original_language}
               onChange={handleFilterChange}
             >
               <option value="">All Languages</option>
@@ -160,42 +162,24 @@ export default function AllMovies({ lang }) {
               <option value="es">Spanish</option>
             </select>
           </div>
-
-          {/* Apply Filters Button */}
-          <div className="flex justify-center mt-6">
-            <button
-              onClick={applyFilters}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              {lang === 'ar' ? 'تطبيق الفلاتر' : 'Apply Filters'}
-            </button>
-          </div>
         </div>
       </div>
 
       {/* Movies Section */}
       <div className="flex-grow">
-        {loading ? (
-          <div className="flex justify-center items-center h-full">
-            <Spinner />
-          </div>
-        ) : (
-          <>
-            <MediaSection
-              title={lang === 'ar' ? 'جميع الأفلام' : 'All Movies'}
-              mediaItems={movies}
-              lang={lang}
-              isTaged={false}
-              type="movies"
-            />
+        <MediaSection
+          title={lang === 'ar' ? 'جميع الأفلام' : 'All Movies'}
+          mediaItems={movies}
+          lang={lang}
+          isTaged={false}
+          type="movies"
+        />
 
-            <Pagination
-              currentPage={filters.page}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
+        <Pagination
+          currentPage={filters.page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
