@@ -5,8 +5,7 @@ A movie exploration platform built with **Next.js 14**, **TMDb API**, and **Fire
 ## Live Demo
 
 Check out the live version of the project:  
-[**Movies TMDb Website**](https://movies-website-ke95-git-style-yasser-al-ariqis-projects.vercel.app/en)
-
+[**Movies TMDb Website**](https://movies-website-pearl.vercel.app/en)
 ## Features
 
 ### 🔍 **Search Functionality**
