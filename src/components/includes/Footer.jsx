@@ -10,29 +10,38 @@ const Footer = ({ dict }) => {
   ];
 
   return (
-    <footer className="bg-slate-100 dark:bg-gray-900 py-6">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-gray-800 dark:text-white">
+    <footer className="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Logo with subtle hover effect */}
+          <Link 
+            href="/" 
+            className="text-2xl font-bold text-gray-800 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+          >
             TMDB
           </Link>
           
-          {/* Navigation Links */}
-          <ul className="flex flex-row gap-4 mt-4 md:mt-0">
-            {footerLinks.map((link) => (
-              <li key={link.name}>
-                <Link href={link.path} className="text-gray-700 dark:text-gray-200 hover:text-blue-400">
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* Navigation Links with better spacing */}
+          <nav>
+            <ul className="flex flex-wrap justify-center gap-6">
+              {footerLinks.map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    href={link.path} 
+                    className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors font-medium text-sm uppercase tracking-wider"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
-        <div className="text-center mt-4">
-          <p className="text-gray-600 dark:text-gray-400">
-            &copy; {new Date().getFullYear()} {dict.copyright}
+        {/* Copyright with subtle top border */}
+        <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 text-center">
+          <p className="text-xs text-gray-500 dark:text-gray-500">
+            &copy; {new Date().getFullYear()} {dict.copyright} Yasser AL-ariqi (yaaser10esam10@gmail.com)
           </p>
         </div>
       </div>

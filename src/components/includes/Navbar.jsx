@@ -11,7 +11,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 
 export default function Navbar({ lang, dict }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [isArabic, setIsArabic] = useState(lang === 'ar')
   const [user, setUser] = useState(null)
 
