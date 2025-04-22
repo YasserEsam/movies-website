@@ -27,7 +27,7 @@ export default async function RootLayout({ children, params: { lang } }) {
   const footerDict = dict.Footer
 
   return (
-    <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
+    <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'} className="dark" suppressHydrationWarning>
       <head>
         {/* ✅ سكربت تفعيل dark mode قبل React */}
         <script
