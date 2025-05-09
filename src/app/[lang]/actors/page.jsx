@@ -14,7 +14,7 @@ export default async function Actors({ params: { lang } }) {
  
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-800">
+    <div className="bg-gray-100 dark:bg-gray-800 pt-20">
       <AllActors lang={lang} />
     </div>
   );

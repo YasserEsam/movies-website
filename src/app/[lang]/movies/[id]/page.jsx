@@ -72,7 +72,7 @@ export default async function page({ params: { id, lang } }) {
 
   return (
     <div
-      className="relative min-h-screen bg-gray-100 dark:bg-gray-900 py-8"
+      className="relative pt-32 min-h-screen bg-gray-100 dark:bg-gray-900 py-8"
       style={{
         backgroundImage: `url(${movie.backdropUrl})`,
         backgroundSize: 'cover',

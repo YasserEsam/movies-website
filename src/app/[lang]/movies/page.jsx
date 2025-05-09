@@ -12,7 +12,7 @@ export default async function Movies({ params: { lang } }) {
   const dict = await getDictionary(lang);
 
   return (
-    <div className="bg-white dark:bg-gray-800">
+    <div className="bg-white dark:bg-gray-800 pt-20">
       <AllMovies lang={lang} />
     </div>
   );

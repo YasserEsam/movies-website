@@ -65,7 +65,7 @@ export default async function ActorPage({ params: { id, lang } }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
+    <div className="min-h-screen bg-gradient-to-b pt-32 from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12">
       <div className="container mx-auto px-4">
         {/* Actor Header */}
         <div className="flex flex-col lg:flex-row gap-8 mb-12">

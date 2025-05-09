@@ -8,6 +8,7 @@ const CustomButton = ({
   height = 'auto',
   margin = '0',
   padding = '0.5rem 1rem',
+  children,
   className = '',
 }) => {
 
@@ -22,8 +23,9 @@ const CustomButton = ({
       }}
       className={`flex gap-2 items-center rounded dark:bg-gray-800  bg-gray-200 dark:text-gray-200 text-gray-800  transition-colors duration-300 ${className}`}
     >
-      {text  && <h1>{text}</h1>} 
+      {text && <span>{text}</span>}
       {Icon && <Icon />}
+      {children}
     </button>
   );
 };

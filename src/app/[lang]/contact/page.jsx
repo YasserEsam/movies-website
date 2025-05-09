@@ -14,7 +14,7 @@ export default async function ContactUs({ params: { lang } }) {
   const dict = await getDictionary(lang);
 
   return (
-    <section className="py-24 bg-white dark:bg-gray-800">
+    <section className="py-24 bg-white dark:bg-gray-800 pt-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 grid-cols-1">
           <div className="lg:mb-0 mb-10">

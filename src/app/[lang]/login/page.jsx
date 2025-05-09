@@ -12,7 +12,7 @@ export default async function LoginPage({ params: { lang } }) {
   const loginDict = dict.login;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800 pt-32">
       <LoginForm lang={lang} dict={loginDict} />
     </div>
   );

@@ -30,7 +30,7 @@ export default async function ResultPage({ searchParams }) {
   }));
 
   return (
-    <div>
+    <div className='pt-32'>
       {mediaItems.length > 0 ? (
         <MediaSection
           title={`Results for "${query}"`}

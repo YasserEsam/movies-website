@@ -31,7 +31,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+    <div className="min-h-screen gitflex items-center justify-center bg-gray-100 dark:bg-gray-800 pt-32">
       <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white text-center mb-6">Sign Up</h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

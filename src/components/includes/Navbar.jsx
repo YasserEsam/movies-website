@@ -14,6 +14,7 @@ export default function Navbar({ lang, dict }) {
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [isArabic, setIsArabic] = useState(lang === 'ar')
   const [user, setUser] = useState(null)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const toggleMenu = () => setMenuOpen(!menuOpen)
 
@@ -71,6 +72,15 @@ export default function Navbar({ lang, dict }) {
     }
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const handleLogout = async () => {
     await signOut(auth)
     setUser(null)
@@ -78,87 +88,117 @@ export default function Navbar({ lang, dict }) {
 
   return (
     <nav
-      className={`bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 shadow-lg w-full sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90 ${isArabic ? 'text-right' : 'text-left'}`}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled
+          ? 'bg-gradient-to-r from-gray-900/95 to-gray-800/95 backdrop-blur-lg shadow-lg'
+          : 'bg-transparent'
+      } ${isArabic ? 'text-right' : 'text-left'}`}
     >
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 py-3 flex justify-between items-center">
-        <div className="flex items-center gap-4 md:gap-8">
-          <Link
-            href={`/${isArabic ? 'ar' : 'en'}/`}
-            className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent hover:from-blue-500 hover:to-blue-300 transition-all duration-300"
-          >
-            TMDB
-          </Link>
-
-          <ul className="hidden lg:flex gap-8 items-center">
-            {menuItems.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={`/${isArabic ? 'ar' : 'en'}${item.path}`}
-                  className="text-gray-700 dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 text-sm md:text-base font-medium transition-colors duration-200 relative group"
-                >
-                  {item.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex items-center space-x-4 md:space-x-6">
-          <div className="hidden lg:flex items-center gap-3">
-            <SearchInput placeholder={dict.search} />
-            <CustomButton
-              icon={isDarkMode ? FaSun : FaMoon}
-              text={isDarkMode ? dict.light : dict.dark}
-              onClick={toggleTheme}
-              className="hover:scale-105 transition-transform duration-200"
-            />
-            <CustomButton
-              text={isArabic ? 'EN' : 'AR'}
-              onClick={toggleLanguage}
-              className="hover:scale-105 transition-transform duration-200"
-            />
-
-            {user ? (
-              <>
-                <CustomButton
-                  icon={FaUser}
-                  text={user.displayName || dict.profile}
-                  className="hover:scale-105 transition-transform duration-200"
-                />
-                <CustomButton
-                  icon={FaSignOutAlt}
-                  text={dict.logout}
-                  onClick={handleLogout}
-                  className="hover:scale-105 transition-transform duration-200"
-                />
-              </>
-            ) : (
-              <Link href="/login">
-                <CustomButton
-                  icon={FaUser}
-                  text={dict.login}
-                  className="hover:scale-105 transition-transform duration-200"
-                />
-              </Link>
-            )}
+      <div className="container  mx-auto px-4 md:px-6 lg:px-8 py-3">
+        <div className="relative backdrop-blur-xl bg-white/5 dark:bg-black/5 rounded-2xl p-4 border border-white/10 dark:border-white/5 shadow-2xl">
+          {/* Animated Gradient Orbs */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mix-blend-overlay filter blur-3xl opacity-5 animate-blob"></div>
+            <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-gradient-to-r from-yellow-400 to-pink-400 rounded-full mix-blend-overlay filter blur-3xl opacity-5 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-32 h-32 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mix-blend-overlay filter blur-3xl opacity-5 animate-blob animation-delay-4000"></div>
           </div>
 
-          <button
-            className="lg:hidden text-gray-700 dark:text-gray-200 ml-4 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200"
-            onClick={toggleMenu}
-          >
-            {menuOpen ? <BiX size={28} /> : <BiMenu size={28} />}
-          </button>
+          <div className="relative z-10 flex justify-between items-center">
+            <div className="flex items-center gap-4 md:gap-8">
+              <Link
+                href={`/${isArabic ? 'ar' : 'en'}/`}
+                className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:from-purple-500 hover:to-pink-500 transition-all duration-300"
+              >
+                TMDB
+              </Link>
+
+              <ul className="hidden lg:flex gap-8 items-center">
+                {menuItems.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      href={`/${isArabic ? 'ar' : 'en'}${item.path}`}
+                      className="text-gray-200 hover:text-purple-300 text-sm md:text-base font-medium transition-colors duration-200 relative group"
+                    >
+                      {item.name}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 group-hover:w-full transition-all duration-300"></span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <div className="hidden lg:flex items-center gap-4">
+                <div className="relative group">
+                  <SearchInput
+                    placeholder={dict.search}
+                    className="bg-white/5 hover:bg-white/10 focus:bg-white/15 border border-white/10 focus:border-purple-500/50 rounded-xl px-4 py-2.5 w-64 transition-all duration-300 focus:ring-2 focus:ring-purple-500/20 focus:outline-none text-gray-200 placeholder-gray-400"
+                  />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
+                </div>
+                <CustomButton
+                  icon={isDarkMode ? FaSun : FaMoon}
+                  text={isDarkMode ? dict.light : dict.dark}
+                  onClick={toggleTheme}
+                  className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+                />
+                <CustomButton
+                  text={isArabic ? 'EN' : 'AR'}
+                  onClick={toggleLanguage}
+                  className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+                />
+
+                {user ? (
+                  <>
+                    <CustomButton
+                      icon={FaUser}
+                      text={user.displayName || dict.profile}
+                      className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+                    />
+                    <CustomButton
+                      icon={FaSignOutAlt}
+                      text={dict.logout}
+                      onClick={handleLogout}
+                      className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+                    />
+                  </>
+                ) : (
+                  <Link href="/login">
+                    <CustomButton
+                      icon={FaUser}
+                      text={dict.login}
+                      className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+                    />
+                  </Link>
+                )}
+              </div>
+
+              <button
+                className="lg:hidden text-gray-200 hover:text-purple-300 ml-4 transition-colors duration-200"
+                onClick={toggleMenu}
+              >
+                {menuOpen ? <BiX size={28} /> : <BiMenu size={28} />}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* Mobile Menu */}
       <div
-        className={`lg:hidden ${menuOpen ? 'block' : 'hidden'} bg-white dark:bg-gray-900 px-4 shadow-lg transform transition-all duration-300 ease-in-out`}
+        className={`lg:hidden ${
+          menuOpen ? 'block' : 'hidden'
+        } bg-gray-900/95 backdrop-blur-lg px-4 shadow-lg transform transition-all duration-300 ease-in-out`}
       >
         <ul className="flex flex-col items-start py-4 space-y-3">
           <li className="w-full">
-            <SearchInput placeholder={dict.search} />
+            <div className="relative group">
+              <SearchInput
+                placeholder={dict.search}
+                className="bg-white/5 hover:bg-white/10 focus:bg-white/15 border border-white/10 focus:border-purple-500/50 rounded-xl px-4 py-2.5 w-full transition-all duration-300 focus:ring-2 focus:ring-purple-500/20 focus:outline-none text-gray-200 placeholder-gray-400"
+              />
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
+            </div>
           </li>
 
           {menuItems.map((item) => (
@@ -166,14 +206,14 @@ export default function Navbar({ lang, dict }) {
               <Link
                 href={`/${isArabic ? 'ar' : 'en'}${item.path}`}
                 onClick={toggleMenu}
-                className="flex items-center text-gray-700 dark:text-gray-200 w-full py-2.5 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                className="flex items-center text-gray-200 hover:text-purple-300 w-full py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors duration-200"
               >
                 {item.name}
               </Link>
             </li>
           ))}
 
-          <li className="w-full pt-2 border-t border-gray-200 dark:border-gray-700">
+          <li className="w-full pt-2 border-t border-white/10">
             <CustomButton
               width="100%"
               icon={isDarkMode ? FaSun : FaMoon}
@@ -182,7 +222,7 @@ export default function Navbar({ lang, dict }) {
                 toggleTheme()
                 toggleMenu()
               }}
-              className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+              className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
             />
           </li>
 
@@ -194,7 +234,7 @@ export default function Navbar({ lang, dict }) {
                 toggleLanguage()
                 toggleMenu()
               }}
-              className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+              className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
             />
           </li>
 
@@ -205,7 +245,7 @@ export default function Navbar({ lang, dict }) {
                   icon={FaUser}
                   text={user.displayName || dict.profile}
                   width="100%"
-                  className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                  className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
                 />
               </li>
               <li className="w-full">
@@ -217,7 +257,7 @@ export default function Navbar({ lang, dict }) {
                     handleLogout()
                     toggleMenu()
                   }}
-                  className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                  className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
                 />
               </li>
             </>
@@ -228,7 +268,7 @@ export default function Navbar({ lang, dict }) {
                   icon={FaUser}
                   text={dict.login}
                   width="100%"
-                  className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                  className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 rounded-xl px-4 py-2.5 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
                   onClick={toggleMenu}
                 />
               </Link>

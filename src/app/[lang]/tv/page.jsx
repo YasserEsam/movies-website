@@ -11,7 +11,7 @@ export default async function TvShows({ params: { lang } }) {
 
 
   return (
-    <div className="bg-white dark:bg-gray-800">
+    <div className="bg-white dark:bg-gray-800 pt-20">
       <AllTv lang={lang}/>
     </div>
   );
